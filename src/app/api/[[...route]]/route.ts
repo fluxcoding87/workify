@@ -6,8 +6,17 @@ import workspaces from "@/features/workspaces/server/route";
 import members from "@/features/members/server/route";
 import projects from "@/features/projects/server/route";
 import tasks from "@/features/tasks/server/route";
-const app = new Hono().basePath("/api");
+import { cors } from "hono/cors";
 
+const app = new Hono().basePath("/api");
+app.use(
+  "*",
+  cors({
+    origin: "https://workify-1vi5vkhue-namans-projects-df56ce58.vercel.app", // Allow specific origin
+    allowMethods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed methods
+    allowHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+  })
+);
 const routes = app
   .route("/auth", auth)
   .route("/workspaces", workspaces)
